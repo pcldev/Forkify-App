@@ -1,0 +1,12 @@
+import   "53123d9d5ca854a4241cf1b5525c98f5:./View.js";
+import   "53123d9d5ca854a4241cf1b5525c98f5:./prevView.js";
+class $53123d9d5ca854a4241cf1b5525c98f5$var$ResulesView extends $53123d9d5ca854a4241cf1b5525c98f5$import$bc564d5e62d693bc$9099ad97b570f7c {
+    _parentEl = document.querySelector('.results');
+    _errorMess = 'No recipes found for your query! Please try again';
+    _sucessmessage = '';
+    _generateMarkup() {
+        return this._data.reduce((total, item)=>total + $53123d9d5ca854a4241cf1b5525c98f5$import$5b26fba8b5999145$9099ad97b570f7c.render(item, false)
+        , '');
+    }
+}
+var $53123d9d5ca854a4241cf1b5525c98f5$export$9099ad97b570f7c = new $53123d9d5ca854a4241cf1b5525c98f5$var$ResulesView();

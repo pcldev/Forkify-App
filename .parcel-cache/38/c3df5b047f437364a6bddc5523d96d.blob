@@ -1,0 +1,54 @@
+import   "c6577645e5d8bdbaa94bbfa44812d29f:./View.js";
+class $c6577645e5d8bdbaa94bbfa44812d29f$var$AddRecipeView extends $c6577645e5d8bdbaa94bbfa44812d29f$import$bc564d5e62d693bc$9099ad97b570f7c {
+    _parentEl = document.querySelectorAll('.upload ');
+    _btnUpload = document.querySelector('.upload__btn');
+    _window = document.querySelector('.add-recipe-window');
+    _overlay = document.querySelector('.overlay');
+    _btnOpen = document.querySelector('.nav__btn--add-recipe');
+    _btnClose = document.querySelector('.btn--close-modal');
+    constructor(){
+        super();
+        this._addHandlerShowWindow();
+        this._addHandlerHideWindow();
+    }
+    toggleWindow() {
+        this._overlay.classList.toggle('hidden');
+        this._window.classList.toggle('hidden');
+    }
+    _addHandlerShowWindow() {
+        this._btnOpen.addEventListener('click', this.toggleWindow.bind(this));
+    }
+    _addHandlerHideWindow() {
+        this._btnClose.addEventListener('click', this.toggleWindow.bind(this));
+        this._overlay.addEventListener('click', this.toggleWindow.bind(this));
+    }
+    addHandlerUpload(hd) {
+        let parentEl = this._parentEl;
+        let allData = [];
+        this._btnUpload.addEventListener('click', function(e) {
+            e.preventDefault();
+            parentEl.forEach((dt)=>{
+                allData.push(dt);
+            });
+            // console.log(...allData);
+            const dataArr = [];
+            allData.forEach((dt)=>{
+                dataArr.push([
+                    ...new FormData(dt)
+                ]);
+            });
+            // console.log(...dataArr);
+            let EntriData = [];
+            dataArr.forEach((dt)=>{
+                EntriData.push(Object.fromEntries([
+                    ...new Set(dt)
+                ]));
+            });
+            // console.log(EntriData);
+            hd(EntriData);
+        // hd(Object.fromEntries(dataArr))
+        });
+    // _generateMarkup() {}
+    }
+}
+var $c6577645e5d8bdbaa94bbfa44812d29f$export$9099ad97b570f7c = new $c6577645e5d8bdbaa94bbfa44812d29f$var$AddRecipeView();

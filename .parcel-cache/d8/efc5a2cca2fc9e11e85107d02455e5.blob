@@ -1,0 +1,9 @@
+import   "ee1c9f00cafbaa7eb9a22c56a86ed6bf:./View.js";
+class $ee1c9f00cafbaa7eb9a22c56a86ed6bf$var$PreView extends $ee1c9f00cafbaa7eb9a22c56a86ed6bf$import$bc564d5e62d693bc$9099ad97b570f7c {
+    _parentEl = '';
+    _generateMarkup() {
+        const id = window.location.hash.slice(0);
+        return `<li class="preview">\n    <a class="preview__link ${this._data.id === id ? 'preview__link--active' : ''}" href="#${this._data.id}">\n      <figure class="preview__fig">\n        <img src="${this._data.image}" alt="Test" />\n      </figure>\n      <div class="preview__data">\n        <h4 class="preview__title">${this._data.title}</h4>\n        <p class="preview__publisher">${this._data.publisher}</p>\n      </div>\n    </a>\n  </li>`;
+    }
+}
+var $ee1c9f00cafbaa7eb9a22c56a86ed6bf$export$9099ad97b570f7c = new $ee1c9f00cafbaa7eb9a22c56a86ed6bf$var$PreView();

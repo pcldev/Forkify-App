@@ -1,0 +1,60 @@
+class $218c4fad96b3f782164723b8daaeafc1$export$9099ad97b570f7c {
+    _data;
+    //Create render() function to render the recipe
+    /**
+   *
+   * @param {Object | Object[]} data The data to be rendered (e.g recipe)
+   * @param {boolean} [render=true] If false create markup string instead of rendering to the DOM
+   * @returns {undefined | string} A markup string is returned if render=false
+   * @this {Object} Vierw instance
+   * @author Phan Công Long
+   * @todo finish implementation
+   */ render(dt, render = true) {
+        //This dt is model.state.recipe obj which decleared in model.js
+        if (!dt || Array.isArray(dt) && dt.length === 0) return this.renderError();
+        this._data = dt;
+        const markup = this._generateMarkup();
+        if (!render) return markup; //If render is false return markup because this._parentEl default = "" sao we need to return markup to prevent
+        this._clear(); //Clear all recipe
+        this._parentEl.insertAdjacentHTML('afterbegin', markup); //Add generateMarkup to #parentEL
+    }
+    update(dt) {
+        this._data = dt;
+        const newMarkup = this._generateMarkup();
+        const newDom = document.createRange().createContextualFragment(newMarkup);
+        // console.log(newDom);
+        //Create virtual DOM to compare virtual DOM to parent DOM
+        const newElements = Array.from(newDom.querySelectorAll('*'));
+        const curElements = Array.from(this._parentEl.querySelectorAll('*'));
+        newElements.forEach((newEl, index)=>{
+            const curEl = curElements[index];
+            // console.log(newEl);
+            //Updates changed TEXT
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== '') curEl.textContent = newEl.textContent;
+            //Updates changed data ATTRIBUTES
+            if (!newEl.isEqualNode(curEl)) //Những cái nào khác nhau sẽ được lọc ra , tạo một array với newEl.attribute để có thể thay đổi thuộc tính data-update-to
+            //attr.name là những thuộc tính có trong 1 div ví dụ như class hay data-update-to rồi ta setAttribute với từng phần tử của curEl (CurElement[index]) =NewEl đã được thay đổi
+            Array.from(newEl.attributes).forEach((attr)=>{
+                curEl.setAttribute(attr.name, attr.value);
+            });
+        });
+    }
+    _clear() {
+        this._parentEl.innerHTML = '';
+    }
+    renderSpinner() {
+        const markup = `\n     <div class="spinner">\n      <svg>\n        <use href="src/img/icons.svg#icon-loader"></use>\n      </svg>\n    </div> `;
+        this._clear();
+        this._parentEl.insertAdjacentHTML('afterbegin', markup);
+    }
+    renderError(message = this._errorMess) {
+        const markup = `\n    <div class="error">\n      <div>\n        <svg>\n          <use href="src/img/icons.svg#icon-alert-triangle"></use>\n        </svg>\n      </div>\n      <p>${message}</p>\n    </div>`;
+        this._clear();
+        this._parentEl.insertAdjacentHTML('afterbegin', markup);
+    }
+    renderMessage(message = this._sucessmessage) {
+        const markup = `\n    <div class="message">\n      <div>\n          <svg>\n              <use href="src/img/icons.svg#icon-smile"></use>\n          </svg>\n        </div>\n        <p>${message}</p>\n      </div>`;
+        this._clear();
+        this._parentEl.insertAdjacentHTML('afterbegin', markup);
+    }
+}

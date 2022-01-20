@@ -1,0 +1,131 @@
+import   "cfd42065488d44f1962add05e026796d:./config.js";
+import   "cfd42065488d44f1962add05e026796d:./helper.js";
+import   "cfd42065488d44f1962add05e026796d:./config.js";
+const $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3 = {
+    recipe: {
+    },
+    search: {
+        query: '',
+        results: [],
+        page: 1,
+        resultsPerPage: $cfd42065488d44f1962add05e026796d$import$7d33118c35f7af8f$6ca7b35c65413bfb
+    },
+    bookmarks: []
+};
+const $cfd42065488d44f1962add05e026796d$export$e9bb34c12ee45abf = async function(id) {
+    try {
+        const resjson = await $cfd42065488d44f1962add05e026796d$import$502156b9dff0f98b$578f55a5d60842ba(`${$cfd42065488d44f1962add05e026796d$import$7d33118c35f7af8f$121552fae10d4c49}${id}`);
+        //Fetch data from API
+        const { recipe: Recipe  } = resjson.data; //Create an Obj call Recipe
+        $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.recipe = {
+            id: Recipe.id,
+            title: Recipe.title,
+            publisher: Recipe.publisher,
+            soureUrl: Recipe.source_url,
+            image: Recipe.image_url,
+            servings: Recipe.servings,
+            cookingTime: Recipe.cooking_time,
+            ingredients: Recipe.ingredients
+        }; //Set state.recipe =Recipe
+        if ($cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.bookmarks.some((bk)=>bk.id === id
+        )) $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.recipe.bookmarked = true;
+        else $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.recipe.bookmarked = false;
+    //Because when data JSON was called from API , and it loaded again .We need an if check
+    //Arr state.bookmarks contains recipe which is marked . We check if in arr have bk.id === id (we click at recipe and it return an id) and we add state.recipe.bookmark
+    } catch (err) {
+        throw err;
+    }
+};
+const $cfd42065488d44f1962add05e026796d$export$3ebf3dcac05c94a4 = async function(query) {
+    try {
+        $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.search.query = query;
+        const resjson = await $cfd42065488d44f1962add05e026796d$import$502156b9dff0f98b$578f55a5d60842ba(`${$cfd42065488d44f1962add05e026796d$import$7d33118c35f7af8f$121552fae10d4c49}?search=${query}`);
+        // console.log(resjson);
+        $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.search.results = resjson.data.recipes.map((dt)=>{
+            return {
+                id: dt.id,
+                title: dt.title,
+                publisher: dt.publisher,
+                image: dt.image_url
+            };
+        });
+        $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.search.page = 1;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+const $cfd42065488d44f1962add05e026796d$export$b85fdf26818ddd9 = function(page = $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.search.page) {
+    $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.search.page = page;
+    const start = (page - 1) * $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.search.resultsPerPage;
+    const end = page * $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.search.resultsPerPage;
+    return $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.search.results.slice(start, end);
+};
+const $cfd42065488d44f1962add05e026796d$export$eaa86c45fa050aec = function(newServing) {
+    //state.recipe.ingredients hss quantity
+    $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.recipe.ingredients.forEach((ing)=>{
+        ing.quantity = ing.quantity * newServing / $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.recipe.servings;
+    //This code mean like ing.quantity=1 x (8) / 4 (the original serving) = 2
+    });
+    $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.recipe.servings = newServing;
+//And the state.recipe.serving will be assighed =newServings like 1 = 2
+};
+const $cfd42065488d44f1962add05e026796d$var$persistBookmark = function() {
+    localStorage.setItem('bookmarks', JSON.stringify($cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.bookmarks));
+};
+const $cfd42065488d44f1962add05e026796d$export$2c646a1a6f490234 = function(recipe) {
+    $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.bookmarks.forEach((dt)=>console.log(dt)
+    );
+    //Mark current recipe as bookmark
+    $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.recipe.bookmarked = true; //This is a method that can add a key/value to Obj (Obj.key=value)
+    //Add bookmarks
+    $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.bookmarks.push(recipe);
+    $cfd42065488d44f1962add05e026796d$var$persistBookmark();
+};
+const $cfd42065488d44f1962add05e026796d$export$41cb8433136cb07d = function(id) {
+    //Delete bookmark
+    const index = $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.bookmarks.findIndex((el)=>el.id === id
+    ); //Find the first element which satisfy
+    // console.log(index);
+    $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.bookmarks.splice(index, 1); //Delete element at index position in array bookmark .EX:a=  ["pizza","avcado","pasta"]  a.splce(1,1) => a =["pizza","pasta"]
+    //Mark current recipe as not bookmark
+    $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.recipe.bookmarked = false;
+    $cfd42065488d44f1962add05e026796d$var$persistBookmark();
+};
+const $cfd42065488d44f1962add05e026796d$var$init = ()=>{
+    const storage = localStorage.getItem('bookmarks');
+    if (storage) $cfd42065488d44f1962add05e026796d$export$c837a8b98c265ae3.bookmarks = JSON.parse(storage);
+};
+$cfd42065488d44f1962add05e026796d$var$init();
+const $cfd42065488d44f1962add05e026796d$export$56a8c91f2354a446 = async function(newRecipe) {
+    try {
+        // ingredients.map(dt => {
+        //   console.log(dt);
+        // });
+        // .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
+        // .map(ing => {
+        //   const ingArr = ing[1].replaceAll(' ', '').split(',');
+        //   if (ingArr.length !== 3)
+        //     throw new Error(
+        //       'Wrong Ingredient format! Please use the correct format'
+        //     );
+        //   const [quantity, unit, description] = ingArr;
+        //   if (ing)
+        //     return { quantity: quantity ? +quantity : null, unit, description };
+        // });
+        const recipe = {
+            title: newRecipe[0].title,
+            source_url: newRecipe[0].sourceUrl,
+            image_url: newRecipe[0].image,
+            publisher: newRecipe[0].publisher,
+            cooking_time: +newRecipe[0].cookingTime,
+            servings: +newRecipe[0].servings,
+            ingredients: newRecipe.slice(1)
+        };
+        console.log(recipe);
+    // const data = await sendJSON(`${API_URL}?key=${KEY}`, recipe);
+    // console.log(data);
+    } catch (err) {
+        throw err;
+    }
+};

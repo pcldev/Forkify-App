@@ -1,0 +1,35 @@
+import   "e035500e49fa318d654600c3d39e315c:./View.js";
+class $e035500e49fa318d654600c3d39e315c$var$PaginationView extends $e035500e49fa318d654600c3d39e315c$import$bc564d5e62d693bc$9099ad97b570f7c {
+    _parentEl = document.querySelector('.pagination');
+    addHandlerClick(hd) {
+        this._parentEl.addEventListener('click', (e)=>{
+            const btn = e.target.closest('.btn--inline');
+            if (!btn) return;
+            const goToPage = +btn.dataset.goto;
+            hd(goToPage);
+        });
+    }
+    _generateMarkup() {
+        const currentPage = this._data.page;
+        console.log(this._data);
+        const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
+        //Page 1 and other page
+        if (currentPage === 1 && numPages > 1) return this._generateMarkupPageNumber(currentPage) + this._generateMarkupBtnNext(currentPage);
+        //Last page
+        if (currentPage === numPages && numPages > 1) return this._generateMarkupBtnPre(currentPage) + this._generateMarkupPageNumber(currentPage);
+        //Other page
+        if (currentPage < numPages) return this._generateMarkupBtnPre(currentPage) + this._generateMarkupPageNumber(currentPage) + this._generateMarkupBtnNext(currentPage);
+        //Page 1 and no other page
+        return this._generateMarkupPageNumber(currentPage);
+    }
+    _generateMarkupBtnPre(curPage) {
+        return `\n      <button data-goto="${curPage - 1}" class="btn--inline pagination__btn--prev">\n        <svg class="search__icon">\n          <use href="src/img/icons.svg#icon-arrow-left"></use>\n        </svg>\n        <span>Page ${curPage - 1}</span>\n      </button>`;
+    }
+    _generateMarkupBtnNext(curPage) {
+        return `\n      <button data-goto="${curPage + 1}" class="btn--inline pagination__btn--next">\n        <span>Page ${curPage + 1}</span>\n          <svg class="search__icon">\n            <use href="src/img/icons.svg#icon-arrow-right"></use>\n          </svg>\n      </button>`;
+    }
+    _generateMarkupPageNumber(curPage) {
+        return `\n    <div class="current__page">\n      <div class="page__num">\n        <p>Page ${curPage}</p>\n      </div>\n    </div>\n      `;
+    }
+}
+var $e035500e49fa318d654600c3d39e315c$export$9099ad97b570f7c = new $e035500e49fa318d654600c3d39e315c$var$PaginationView();

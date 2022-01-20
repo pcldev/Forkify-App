@@ -1,0 +1,92 @@
+import   "92869099ca6105c1d76ee7c04e4a1b50:./model.js";
+import   "92869099ca6105c1d76ee7c04e4a1b50:./views/reciperView.js";
+import   "92869099ca6105c1d76ee7c04e4a1b50:./views/searchView.js";
+import   "92869099ca6105c1d76ee7c04e4a1b50:./views/resultsView.js";
+import   "92869099ca6105c1d76ee7c04e4a1b50:./views/bookMarkView.js";
+import   "92869099ca6105c1d76ee7c04e4a1b50:./views/paginationView.js";
+import   "92869099ca6105c1d76ee7c04e4a1b50:./views/addRecipeView.js";
+// https://forkify-api.herokuapp.com/v2
+///////////////////////////////////////
+const $92869099ca6105c1d76ee7c04e4a1b50$var$controlRecipe = async function() {
+    try {
+        const id = window.location.hash.split('#')[1];
+        if (!id) return;
+        $92869099ca6105c1d76ee7c04e4a1b50$import$c54ff88adcbafc8b$9099ad97b570f7c.renderSpinner();
+        //0)Update results view to mark selected search result
+        $92869099ca6105c1d76ee7c04e4a1b50$import$a3b1aa600613c84a$9099ad97b570f7c.update($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$b85fdf26818ddd9());
+        //Loading recipe
+        await $92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$e9bb34c12ee45abf(id);
+        //transmiss "id" into loadRecipe then fecth API and after that set the model.state.recipe=recipe which is data.json()
+        // console.log(model.state.recipe);
+        //2) Rendering recipe
+        $92869099ca6105c1d76ee7c04e4a1b50$import$c54ff88adcbafc8b$9099ad97b570f7c.render($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.recipe);
+        //Render recipe with state.recipe now is fetch API with id
+        //3)Updating bookmark
+        $92869099ca6105c1d76ee7c04e4a1b50$import$7e761dce9669ecf5$9099ad97b570f7c.update($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.bookmarks);
+    } catch (err) {
+        $92869099ca6105c1d76ee7c04e4a1b50$import$c54ff88adcbafc8b$9099ad97b570f7c.renderError();
+    }
+};
+const $92869099ca6105c1d76ee7c04e4a1b50$var$controlSearchResults = async function() {
+    try {
+        $92869099ca6105c1d76ee7c04e4a1b50$import$a3b1aa600613c84a$9099ad97b570f7c.renderSpinner();
+        //1) Get search query
+        const query = $92869099ca6105c1d76ee7c04e4a1b50$import$a55578fd3c642271$9099ad97b570f7c.getQuery();
+        if (!query) return;
+        //2) Load search results
+        await $92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$3ebf3dcac05c94a4(query);
+        //3) Render results
+        $92869099ca6105c1d76ee7c04e4a1b50$import$a3b1aa600613c84a$9099ad97b570f7c.render($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$b85fdf26818ddd9());
+        //4)Render initial pagination button
+        $92869099ca6105c1d76ee7c04e4a1b50$import$1060d8bab8d0ca7e$9099ad97b570f7c.render($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.search);
+    } catch (err) {
+        console.log(err);
+    }
+};
+const $92869099ca6105c1d76ee7c04e4a1b50$var$controlPagination = (goToPage)=>{
+    //1) Render new results
+    $92869099ca6105c1d76ee7c04e4a1b50$import$a3b1aa600613c84a$9099ad97b570f7c.render($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$b85fdf26818ddd9(goToPage));
+    //2)Render initial new pagination button
+    $92869099ca6105c1d76ee7c04e4a1b50$import$1060d8bab8d0ca7e$9099ad97b570f7c.render($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.search);
+};
+const $92869099ca6105c1d76ee7c04e4a1b50$var$controlUpdateServing = (newServing)=>{
+    //Update the recipe serving
+    $92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$eaa86c45fa050aec(newServing);
+    //Update the recipe view
+    $92869099ca6105c1d76ee7c04e4a1b50$import$c54ff88adcbafc8b$9099ad97b570f7c.update($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.recipe);
+};
+const $92869099ca6105c1d76ee7c04e4a1b50$var$controlAddBookmark = function() {
+    //1>Add/remove bookmark
+    if (!$92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.recipe.bookmarked) $92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$2c646a1a6f490234($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.recipe);
+    else $92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$41cb8433136cb07d($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.recipe.id);
+    //2>Update recipe view
+    $92869099ca6105c1d76ee7c04e4a1b50$import$c54ff88adcbafc8b$9099ad97b570f7c.update($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.recipe);
+    //3>Render bookmarks
+    $92869099ca6105c1d76ee7c04e4a1b50$import$7e761dce9669ecf5$9099ad97b570f7c.render($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.bookmarks);
+};
+const $92869099ca6105c1d76ee7c04e4a1b50$var$controlBookmarks = function() {
+    $92869099ca6105c1d76ee7c04e4a1b50$import$7e761dce9669ecf5$9099ad97b570f7c.render($92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$c837a8b98c265ae3.bookmarks);
+};
+const $92869099ca6105c1d76ee7c04e4a1b50$var$controlAddRecipe = async function(newRecipe) {
+    try {
+        await $92869099ca6105c1d76ee7c04e4a1b50$import$729f94da8f1824ff$56a8c91f2354a446(newRecipe);
+    } catch (err) {
+        console.error(err);
+        $92869099ca6105c1d76ee7c04e4a1b50$import$14bdd31a0c5d8ad1$9099ad97b570f7c.renderError(err.message);
+    }
+};
+const $92869099ca6105c1d76ee7c04e4a1b50$var$init = function() {
+    $92869099ca6105c1d76ee7c04e4a1b50$import$7e761dce9669ecf5$9099ad97b570f7c.addHandlerRender($92869099ca6105c1d76ee7c04e4a1b50$var$controlBookmarks);
+    $92869099ca6105c1d76ee7c04e4a1b50$import$c54ff88adcbafc8b$9099ad97b570f7c.addhandleRender($92869099ca6105c1d76ee7c04e4a1b50$var$controlRecipe);
+    $92869099ca6105c1d76ee7c04e4a1b50$import$c54ff88adcbafc8b$9099ad97b570f7c.addhandleUpdateServing($92869099ca6105c1d76ee7c04e4a1b50$var$controlUpdateServing);
+    $92869099ca6105c1d76ee7c04e4a1b50$import$c54ff88adcbafc8b$9099ad97b570f7c.addhandleAddBookMark($92869099ca6105c1d76ee7c04e4a1b50$var$controlAddBookmark);
+    $92869099ca6105c1d76ee7c04e4a1b50$import$a55578fd3c642271$9099ad97b570f7c.addHandelerSearch($92869099ca6105c1d76ee7c04e4a1b50$var$controlSearchResults);
+    $92869099ca6105c1d76ee7c04e4a1b50$import$1060d8bab8d0ca7e$9099ad97b570f7c.addHandlerClick($92869099ca6105c1d76ee7c04e4a1b50$var$controlPagination);
+    $92869099ca6105c1d76ee7c04e4a1b50$import$14bdd31a0c5d8ad1$9099ad97b570f7c.addHandlerUpload($92869099ca6105c1d76ee7c04e4a1b50$var$controlAddRecipe);
+};
+$92869099ca6105c1d76ee7c04e4a1b50$var$init();
+const $92869099ca6105c1d76ee7c04e4a1b50$var$clearBookmark = function() {
+    localStorage.clear('bookmarks');
+}; /**
+ * Display number of pages between the pagination button
+ */ 

@@ -1,0 +1,40 @@
+import   "7887eaa1c361c24144857a9f0d7e5e10:./config.js";
+const $7887eaa1c361c24144857a9f0d7e5e10$var$timeout = function(s) {
+    return new Promise(function(_, reject) {
+        setTimeout(function() {
+            reject(new Error(`Request took too long! Timeout after ${s} second`));
+        }, s * 1000);
+    });
+};
+const $7887eaa1c361c24144857a9f0d7e5e10$export$578f55a5d60842ba = async function(url) {
+    try {
+        const res = await Promise.race([
+            fetch(`${url}`),
+            $7887eaa1c361c24144857a9f0d7e5e10$var$timeout($7887eaa1c361c24144857a9f0d7e5e10$import$7d33118c35f7af8f$c5ccdbd82addd8d)
+        ]);
+        const resjson = await res.json();
+        if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+        return resjson;
+    } catch (err) {
+        throw err;
+    }
+};
+const $7887eaa1c361c24144857a9f0d7e5e10$export$452c1221f2f0b3d4 = async function(url, uploadData) {
+    try {
+        const res = await Promise.race([
+            fetch(`${url}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(uploadData)
+            }),
+            $7887eaa1c361c24144857a9f0d7e5e10$var$timeout($7887eaa1c361c24144857a9f0d7e5e10$import$7d33118c35f7af8f$c5ccdbd82addd8d), 
+        ]);
+        const resjson = await res.json();
+        if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+        return resjson;
+    } catch (err) {
+        throw err;
+    }
+};

@@ -1,0 +1,19 @@
+class $2a73bb41bbfdf35dc25b2f5d82245d35$var$SearchView {
+    _parentEl = document.querySelector('.search');
+    getQuery() {
+        const query = this._parentEl.querySelector('.search__field').value;
+        this._clearInput();
+        return query;
+    }
+    _clearInput() {
+        this._parentEl.querySelector('.search__field').value = '';
+        this._parentEl.querySelector('.search__field').blur();
+    }
+    addHandelerSearch(hd) {
+        this._parentEl.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            hd();
+        });
+    }
+}
+var $2a73bb41bbfdf35dc25b2f5d82245d35$export$9099ad97b570f7c = new $2a73bb41bbfdf35dc25b2f5d82245d35$var$SearchView();
